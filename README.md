@@ -72,15 +72,15 @@ func main() {
 
 user
 
-|:---:|:---:|:---:|:---:|
 |id|username|password|card_id|email|
+|:---:|:---:|:---:|:---:|:---:|
 |1|tom|hashpwd1|1|tom@test.com|
 |2|lice|hashpwd2|2|tom@test.com|
 
 card
 
-|:---:|:---:|:---:|:---:|
 |id|name|card_id|valid_date|value|
-|1|card1|id1|1|tom@test.com|
-|2|card2|id2|2|tom@test.com|
+|:---:|:---:|:---:|:---:|:---:|
+|1|card1|id1|timestamp1|500|
+|2|card2|id2|timestamp1|3000|
 
