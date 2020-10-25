@@ -51,6 +51,7 @@ func main() {
 - 这块有遇见什么比较好用的工具么？他给你解决了什么问题？
 - 私下自己有没有什么有趣的东西或者项目？
 - namespace, systemd, runC, containerd, docker 这些都是什么东西，他们之间什么关系。
+- k8s 如何利用 etcd 的？
 
 ### 工具
 

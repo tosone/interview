@@ -4,6 +4,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"sync"
 
 	"github.com/gin-gonic/gin"
 )
@@ -30,17 +31,19 @@ func main() {
 	_ = app.Run()
 }
 
-// Tester ..
 type Tester struct {
-	data []byte
+	data   []byte
+	locker *sync.Mutex
+	eof    bool
 }
 
-// NewTester ..
 func NewTester() (tester *Tester, err error) {
+	tester = new(Tester)
 	var file *os.File
 	if file, err = os.Open("app.go"); err != nil {
 		return
 	}
+	tester.locker = new(sync.Mutex)
 
 	go func() {
 		defer func() {
@@ -50,21 +53,34 @@ func NewTester() (tester *Tester, err error) {
 		}()
 		for {
 			var data = make([]byte, 512)
-
-			_, err = file.Read(data)
+			var n int
+			n, err = file.Read(data)
+			tester.locker.Lock()
+			tester.data = append(tester.data, data[:n]...)
+			tester.locker.Unlock()
+			if err == io.EOF {
+				tester.eof = true
+				break
+			}
+			if err != nil {
+				log.Panic(err)
+			}
 		}
 	}()
 	return
 }
 
 func (t *Tester) Read(p []byte) (n int, err error) {
-
+	t.locker.Lock()
+	defer t.locker.Unlock()
 	n = copy(p, t.data[:])
-
+	t.data = t.data[n:]
+	if n == 0 && t.eof {
+		err = io.EOF
+	}
 	return
 }
 
-// Close ..
 func (t *Tester) Close() (err error) {
 	return
 }
