@@ -22,4 +22,9 @@ func main() {
 	fmt.Printf("E offset: %d\n", unsafe.Offsetof(S{}.E))
 	fmt.Printf("E size: %d\n", unsafe.Sizeof(S{}.E))
 	fmt.Printf("Total size: %d\n", unsafe.Sizeof(S{}))
+
+	var firstMap = make(map[string]string)
+	fmt.Printf("%d", unsafe.Sizeof(firstMap))
+	var secondMap = make(map[int]string)
+	fmt.Printf("%d", unsafe.Sizeof(secondMap))
 }
